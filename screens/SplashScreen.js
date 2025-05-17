@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { isAuthenticated } from '../utils';
+import React, {useEffect} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import {isAuthenticated} from '../utils';
 
-const SplashScreen = ({ navigation }) => {
+const SplashScreen = ({navigation}) => {
   useEffect(() => {
     const checkAuthAndNavigate = async () => {
       // Add a small delay to show splash screen
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       const authenticated = await isAuthenticated();
       if (authenticated) {
-        navigation.replace('MainApp');
+        navigation.replace('Home');
       } else {
         navigation.replace('Login');
       }

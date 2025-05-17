@@ -2,16 +2,21 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import SplashScreen from './screens/SplashScreen';
 import LoginScreen from './screens/LoginScreen';
 import Screen1 from './screens/Screen1';
 import Screen2 from './screens/Screen2';
 import Screen3 from './screens/Screen3';
+import Screen4 from './screens/Screen4';
+import Screen5 from './screens/Screen5';
+import StackNavigation from './src/StackNavigation';
+import DrawerNavigator from './src/CustomNavigation';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 const TabNavigator = () => {
   return (
@@ -26,17 +31,20 @@ const TabNavigator = () => {
   );
 };
 
+const MainNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Drawer" component={DrawerNavigator} />
+      <Stack.Screen name="TabNavigator" component={TabNavigator} />
+    </Stack.Navigator>
+  );
+};
+
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="MainApp" component={TabNavigator} />
-      </Stack.Navigator>
+      {/* <StackNavigation /> */}
+      <DrawerNavigator />
     </NavigationContainer>
   );
 }
