@@ -1,13 +1,29 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TextInput, Button, StyleSheet, Text} from 'react-native';
+import {storeUserData, isAuthenticated} from '../utils';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const authenticated = await isAuthenticated();
+    if (authenticated) {
+      navigation.replace('MainApp');
+    }
+  };
+
+  const handleLogin = async () => {
     if (email && password) {
-      navigation.replace('Home');
+      const userData = {email, password};
+      const success = await storeUserData(userData);
+      if (success) {
+        navigation.replace('MainApp');
+      }
     }
   };
 
@@ -19,6 +35,8 @@ const LoginScreen = ({navigation}) => {
         value={email}
         onChangeText={setEmail}
         style={styles.input}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
       <TextInput
         placeholder="Password"

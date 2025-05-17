@@ -1,9 +1,22 @@
-import React, {useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { isAuthenticated } from '../utils';
 
-const SplashScreen = ({navigation}) => {
+const SplashScreen = ({ navigation }) => {
   useEffect(() => {
-    setTimeout(() => navigation.replace('Login'), 2000); // Navigate after 2 sec
+    const checkAuthAndNavigate = async () => {
+      // Add a small delay to show splash screen
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const authenticated = await isAuthenticated();
+      if (authenticated) {
+        navigation.replace('MainApp');
+      } else {
+        navigation.replace('Login');
+      }
+    };
+
+    checkAuthAndNavigate();
   }, [navigation]);
 
   return (
@@ -18,9 +31,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#202940',
+    backgroundColor: '#fff',
   },
-  text: {color: '#fcbc04', fontSize: 28, fontWeight: 'bold'},
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+  },
 });
 
 export default SplashScreen;
